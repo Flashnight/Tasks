@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Tasks.Startup))]
-namespace Tasks
+[assembly: OwinStartupAttribute(typeof(ClassLibrary.Core.Startup))]
+namespace ClassLibrary.Core
 {
     public partial class Startup
     {

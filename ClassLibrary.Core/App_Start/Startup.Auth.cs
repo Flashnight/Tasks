@@ -5,9 +5,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using Tasks.Models;
+using ClassLibrary.Core.Models;
 
-namespace Tasks
+namespace ClassLibrary.Core
 {
     public partial class Startup
     {
