@@ -151,7 +151,7 @@ namespace ClassLibrary.Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, LastName = model.LastName, FirstName = model.FirstName, Patronymic = model.Patronymic, Group = model.Group, Subgroup = model.SubGroup, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -65,6 +65,25 @@ namespace ClassLibrary.Core.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Фамилия")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Имя")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Отчество")]
+        public string Patronymic { get; set; }
+
+        [Required]
+        [Display(Name = "Группа")]
+        public string Group { get; set; }
+
+        [Required]
+        [Display(Name = "Подгруппа")]
+        public int SubGroup { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
