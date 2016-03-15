@@ -17,35 +17,30 @@
             @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
         </div>
     </div>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
         </div>
     </div>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.Patronymic, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Patronymic, new { @class = "form-control" })
         </div>
     </div>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(m => m.Group, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.GroupId, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Group, new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.GroupId,(IEnumerable<SelectListItem>) ViewData["AllGroups"], "Выберите группу")
         </div>
     </div>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.SubGroup, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.SubGroup, new { @class = "form-control" })
         </div>
     </div>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">

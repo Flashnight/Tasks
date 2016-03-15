@@ -77,7 +77,7 @@ namespace ClassLibrary.Core.Models
 
         [Required]
         [Display(Name = "Группа")]
-        public string Group { get; set; }
+        public int GroupId { get; set; }
 
         [Required]
         [Display(Name = "Подгруппа")]

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace ClassLibrary.Core.Models
 {
@@ -12,8 +13,10 @@ namespace ClassLibrary.Core.Models
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string Patronymic { get; set; }
-        public string Group { get; set; }
+        public int GroupId { get; set; }
         public int Subgroup { get; set; }
+
+        public virtual Group Group { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -30,6 +33,8 @@ namespace ClassLibrary.Core.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+
+        public DbSet<Group> Groups { get; set; }
 
         public static ApplicationDbContext Create()
         {
