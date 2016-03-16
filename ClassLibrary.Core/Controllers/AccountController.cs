@@ -139,6 +139,11 @@ namespace ClassLibrary.Core.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ApplicationDbContext db = new ApplicationDbContext();
+
+            var users = db.Groups;
+            ViewData["AllGroups"] = from Group in db.Groups select new SelectListItem { Text = Group.Name, Value = Group.GroupId.ToString() };
+
             return View();
         }
 
@@ -151,7 +156,7 @@ namespace ClassLibrary.Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, LastName = model.LastName, FirstName = model.FirstName, Patronymic = model.Patronymic, GroupId = model.GroupId, Subgroup = model.SubGroup, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
