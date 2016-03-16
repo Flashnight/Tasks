@@ -17,6 +17,7 @@ namespace ClassLibrary.Core.Models
         public int Subgroup { get; set; }
 
         public virtual Group Group { get; set; }
+        public virtual List<StudentTask> StudentTasks { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -35,6 +36,8 @@ namespace ClassLibrary.Core.Models
         }
 
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Discipline> Disciplines { get; set; }
+        public DbSet<StudentTask> StudentTasks { get; set; }
 
         public static ApplicationDbContext Create()
         {
