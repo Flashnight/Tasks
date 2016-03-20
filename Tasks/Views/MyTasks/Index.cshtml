@@ -1,0 +1,37 @@
+﻿@model ClassLibrary.Core.Models.MyTasksListViewModel
+
+@{
+    ViewBag.Title = "Список заданий";
+}
+
+<h2>Список заданий</h2>
+
+<form method="get">
+    <div class="form-inline">
+        <label class="control-label">Дисциплина: </label>
+        @Html.DropDownList("disciplineId", Model.Disciplines as SelectList,
+                htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+
+<table>
+    <tr>
+        <th>Дисциплина</th>
+        <th>Задание</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.StudentTasks)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discipline.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+        </tr>
+    }
+</table>
