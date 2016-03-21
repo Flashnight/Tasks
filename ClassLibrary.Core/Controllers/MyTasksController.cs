@@ -17,26 +17,35 @@ namespace ClassLibrary.Core.Controllers
         {
             IQueryable<StudentTask> studentTasks = db.StudentTasks.Include("Discipline");
 
-            string currentUserId = User.Identity.GetUserId();
+            string currentUserId = User.Identity.GetUserId();   //id текущего пользователя
 
-            studentTasks = studentTasks.Where(p => p.UserId == currentUserId);
+            studentTasks = studentTasks.Where(p => p.UserId == currentUserId);  //получить все задачи пользователя
 
             if (disciplineId != null && disciplineId != 0)
             {
-                studentTasks = studentTasks.Where(p => p.DisciplineId == disciplineId);
+                studentTasks = studentTasks.Where(p => p.DisciplineId == disciplineId); //отфильтровать задания по выбранной дисциплине
             }
 
             List<Discipline> disciplines = db.Disciplines.ToList();//список дисциплин
 
-            disciplines.Insert(0, new Discipline { Name = "Все", DisciplineId = 0 });//выбрать все задания
+            disciplines.Insert(0, new Discipline { Name = "Все", DisciplineId = 0 });   //выбрать все задания
 
-            MyTasksListViewModel mtlvm = new MyTasksListViewModel //данные, которые будут переданы в представление
+            MyTasksListViewModel mtlvm = new MyTasksListViewModel   //данные, которые будут переданы в представление
             {
                 StudentTasks = studentTasks.ToList(),
                 Disciplines = new SelectList(disciplines, "DisciplineId","name")
             };
 
             return View(mtlvm);
+        }
+
+        public ActionResult Description(int taskId)
+        {
+            StudentTask task = db.StudentTasks.FirstOrDefault<StudentTask>(p => p.StudentTaskId == taskId); //найти задачу по id в базе данных
+
+            ViewBag.Task = task;    //передать задания в представление
+
+            return View();
         }
     }
 }

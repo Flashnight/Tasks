@@ -1,0 +1,21 @@
+﻿@model ClassLibrary.Core.Models.StudentTask
+
+@{
+    ViewBag.Title = ViewBag.Task.Title;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Task.Title</title>
+</head>
+<body>
+    <div>
+        <h3>@ViewBag.Task.Title</h3>
+
+        <p>@ViewBag.Task.Description</p>
+    </div>
+</body>
+</html>

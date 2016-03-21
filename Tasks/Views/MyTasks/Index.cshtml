@@ -32,6 +32,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
+            <td>
+                <p>
+                    <a href="/MyTasks/Description?taskId=@item.StudentTaskId">Описание</a>
+                </p>
+            </td>
         </tr>
     }
 </table>
