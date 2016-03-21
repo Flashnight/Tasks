@@ -13,7 +13,7 @@ namespace ClassLibrary.Core.Controllers
     {
         ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index(int? disciplineId)
+        public ActionResult List(int? disciplineId)
         {
             IQueryable<StudentTask> studentTasks = db.StudentTasks.Include("Discipline");
 

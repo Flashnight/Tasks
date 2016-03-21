@@ -274,7 +274,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
-    <Content Include="Views\MyTasks\Index.cshtml" />
+    <Content Include="Views\MyTasks\List.cshtml" />
     <Content Include="Views\MyTasks\Description.cshtml" />
   </ItemGroup>
   <ItemGroup>
