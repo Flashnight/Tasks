@@ -1,0 +1,25 @@
+﻿@using ClassLibrary.Core.Models
+@model StudentTask
+@{
+    ViewBag.Title = "Добавить задание";
+}
+
+<div>
+    <h2>Добавить новое задание</h2>
+    @using (Html.BeginForm("NewTask", "MyStudents", FormMethod.Post))
+    {
+        @Html.LabelFor(model => model.UserId,"Выберите студента: ")
+        @Html.DropDownListFor(model => model.UserId, (IEnumerable<SelectListItem>)ViewData["AllStudents"], "Выберите студента")
+        <br />
+        @Html.LabelFor(model => model.DisciplineId, "Выберите дисциплину: ")
+        @Html.DropDownListFor(model => model.DisciplineId, (IEnumerable<SelectListItem>)ViewData["AllDisciplines"], "Выберите дисциплину")
+        <br />
+        @Html.LabelFor(model => model.Title, "Введите заголовок: ")
+        @Html.TextBoxFor(model => model.Title)
+        <br />
+        @Html.LabelFor(model => model.Description, "Введите описание")
+        @Html.TextBoxFor(model => model.Description)
+        <br />
+        <p><input type="submit" value="Отправить" /></p>
+    }
+</div>

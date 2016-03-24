@@ -127,6 +127,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MyStudentsController.cs" />
     <Compile Include="Controllers\MyTasksController.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Discipline.cs" />
