@@ -1,0 +1,51 @@
+﻿@model ClassLibrary.Core.Models.MyTasksListViewModel
+
+@{
+    ViewBag.Title = "Задания";
+}
+
+<h2>
+    @ViewBag.Title
+    <small><p>Список заданий для выполнения</p></small>
+</h2>
+<hr />
+
+<form class="col-md-offset-1" method="get">
+    <div class="form-group">
+        <div class="col-md-4">
+            @Html.DropDownList("disciplineId", Model.Disciplines as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <input type="submit" value="Применить фильтр" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+<hr class="col-md-offset-1 col-md-10" />
+
+<div class="col-md-offset-1 col-md-10">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-md-2">Дисциплина</th>
+                <th class="col-md-6">Задание</th>
+                <th class="col-md-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StudentTasks)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discipline.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="text-right">
+                        <a href="/MyTasks/Description?taskId=@item.StudentTaskId">Подробнее</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
