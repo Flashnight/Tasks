@@ -1,11 +1,42 @@
 ﻿@model ClassLibrary.Core.Models.StudentTask
-
 @{
-    ViewBag.Title = ViewBag.Task.Title;
+    ViewBag.Title = ViewBag.Task;
 }
+<div class="row col-md-offset-3 col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>@ViewBag.Task.Title</h3>
+        </div>
+        <div class="panel-body">
+            @ViewBag.Task.Description
+        </div>
+        <div class="panel-footer">
+            <div class="text-right">
+                <button class="btn btn-primary">Отправить ответ</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -18,4 +49,4 @@
         <p>@ViewBag.Task.Description</p>
     </div>
 </body>
-</html>
+</html>*@

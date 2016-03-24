@@ -1,42 +1,51 @@
 ﻿@model ClassLibrary.Core.Models.MyTasksListViewModel
 
 @{
-    ViewBag.Title = "Список заданий";
+    ViewBag.Title = "Задания";
 }
 
-<h2>Список заданий</h2>
+<h2>
+    @ViewBag.Title
+    <small><p>Список заданий для выполнения</p></small>
+</h2>
+<hr />
 
-<form method="get">
-    <div class="form-inline">
-        <label class="control-label">Дисциплина: </label>
-        @Html.DropDownList("disciplineId", Model.Disciplines as SelectList,
-                htmlAttributes: new { @class = "form-control" })
-
-        <input type="submit" value="Фильтр" class="btn btn-default" />
+<form class="col-md-offset-1" method="get">
+    <div class="form-group">
+        <div class="col-md-4">
+            @Html.DropDownList("disciplineId", Model.Disciplines as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <input type="submit" value="Применить фильтр" class="btn btn-primary" />
+        </div>
     </div>
 </form>
+<hr class="col-md-offset-1 col-md-10" />
 
-<table>
-    <tr>
-        <th>Дисциплина</th>
-        <th>Задание</th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model.StudentTasks)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Discipline.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <p>
-                    <a href="/MyTasks/Description?taskId=@item.StudentTaskId">Описание</a>
-                </p>
-            </td>
-        </tr>
-    }
-</table>
+<div class="col-md-offset-1 col-md-10">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-md-2">Дисциплина</th>
+                <th class="col-md-6">Задание</th>
+                <th class="col-md-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StudentTasks)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discipline.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="text-right">
+                        <a href="/MyTasks/Description?taskId=@item.StudentTaskId">Подробнее</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

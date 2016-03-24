@@ -28,7 +28,7 @@ namespace ClassLibrary.Core.Controllers
 
             List<Discipline> disciplines = db.Disciplines.ToList();//список дисциплин
 
-            disciplines.Insert(0, new Discipline { Name = "Все", DisciplineId = 0 });   //выбрать все задания
+            disciplines.Insert(0, new Discipline { Name = "Все дисциплины", DisciplineId = 0 });   //выбрать все задания
 
             MyTasksListViewModel mtlvm = new MyTasksListViewModel   //данные, которые будут переданы в представление
             {
