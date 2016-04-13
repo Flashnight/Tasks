@@ -13,6 +13,7 @@ namespace ClassLibrary.Core.Controllers
     {
         ApplicationDbContext db = new ApplicationDbContext();
 
+        [Authorize(Roles = "student")]
         public ActionResult List(int? disciplineId)
         {
             IQueryable<StudentTask> studentTasks = db.StudentTasks.Include("Discipline");
@@ -39,6 +40,7 @@ namespace ClassLibrary.Core.Controllers
             return View(mtlvm);
         }
 
+        [Authorize(Roles = "student")]
         public ActionResult Description(int taskId)
         {
             StudentTask task = db.StudentTasks.FirstOrDefault<StudentTask>(p => p.StudentTaskId == taskId); //найти задачу по id в базе данных
