@@ -160,6 +160,9 @@ namespace ClassLibrary.Core.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //Добавление роли студента для зарегистрированного пользователя по умолчанию
+                    await UserManager.AddToRoleAsync(user.Id, "student");
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
                     // Дополнительные сведения о том, как включить подтверждение учетной записи и сброс пароля, см. по адресу: http://go.microsoft.com/fwlink/?LinkID=320771
