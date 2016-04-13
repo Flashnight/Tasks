@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ClassLibrary.Core.Models;
+using System.Collections.Generic;
 
 namespace ClassLibrary.Core.Controllers
 {
@@ -78,8 +79,27 @@ namespace ClassLibrary.Core.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
+                //Если авторизация прошла успешно
                 case SignInStatus.Success:
-                    return RedirectToRoute(new { controller = "MyTasks", action = "List" });
+                    {
+                        //Список ролей пользователя
+                        IList<string> Roles = new List<string>();
+                        //Получение данных об авторизовавшемся пользователе
+                        ApplicationUserManager UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                        ApplicationUser User = UserManager.FindByEmail(model.Email);
+
+                        //Сохранение в списке всех ролей пользователя
+                        if (User != null)
+                            Roles = UserManager.GetRoles(User.Id);
+
+                        //Перенаправление пользователя после авторизации в зависимости от заданной роли
+                        if (Roles.Where(p => p == "teacher").Count() != 0)
+                        {
+                            return RedirectToRoute(new { controller = "MyStudents", action = "NewTask" });
+                        }
+                        else
+                            return RedirectToRoute(new { controller = "MyTasks", action = "List" });
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
