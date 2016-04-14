@@ -6,6 +6,7 @@ namespace ClassLibrary.Core.Models
     {
         [Key]
         public int SolutionId { get; set; }
+        [Required]
         public string Path { get; set; }
         public int StudentTaskId { get; set; }
 

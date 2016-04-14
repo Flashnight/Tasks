@@ -7,6 +7,7 @@ namespace ClassLibrary.Core.Models
     {
         [Key]
         public int GroupId { get; set; }
+        [Required]
         public string Name { get; set; }
 
         public virtual List<ApplicationUser> Users { get; set; }

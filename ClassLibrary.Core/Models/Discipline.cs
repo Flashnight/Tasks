@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClassLibrary.Core.Models
 {
@@ -11,6 +7,7 @@ namespace ClassLibrary.Core.Models
     {
         [Key]
         public int DisciplineId { get; set; }
+        [Required]
         public string Name { get; set; }
 
         public virtual List<StudentTask> StudentTasks { get; set; }

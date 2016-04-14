@@ -7,8 +7,11 @@ namespace ClassLibrary.Core.Models
     {
         [Key]
         public int StudentTaskId { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public string UserId { get; set; }
         public int DisciplineId { get; set; }
 
