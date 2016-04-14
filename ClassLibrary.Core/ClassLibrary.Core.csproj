@@ -136,6 +136,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyTasksListViewModel.cs" />
+    <Compile Include="Models\Solution.cs" />
     <Compile Include="Models\StudentTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

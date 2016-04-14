@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClassLibrary.Core.Models
 {
@@ -13,5 +14,7 @@ namespace ClassLibrary.Core.Models
 
         public virtual ApplicationUser User { get; set; }
         public virtual Discipline Discipline { get; set; }
+
+        public virtual List<Solution> Solutions { get; set; }
     }
 }
