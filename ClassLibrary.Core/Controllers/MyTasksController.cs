@@ -5,6 +5,7 @@ using ClassLibrary.Core.Models;
 using Microsoft.AspNet.Identity;
 using System.Web;
 using System.IO;
+using System;
 
 namespace ClassLibrary.Core.Controllers
 {
@@ -51,15 +52,20 @@ namespace ClassLibrary.Core.Controllers
 
         [Authorize(Roles = "student")]
         [HttpPost]
-        public ActionResult UploadSolution(HttpPostedFileBase upload)
+        public ActionResult UploadSolution(int taskId, HttpPostedFileBase upload)
         {
             if(upload!=null)
             {
-                //Получение имени файла
-                string fileName = Path.GetFileName(upload.FileName);
+                //Присвоить файлу случайное имя через Guid
+                string fileName = string.Format("{0}.{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
 
                 //Сохранение файла решения в папку Solutions
                 upload.SaveAs(Server.MapPath("~/Solutions/" + fileName));
+
+                //Сохранение ссылки на файл в базе данных
+                Solution NewSolution = new Solution { Path = fileName, StudentTaskId = taskId };
+                db.Solutions.Add(NewSolution);
+                db.SaveChanges();
             }
 
             //Перенаправить на список заданий
