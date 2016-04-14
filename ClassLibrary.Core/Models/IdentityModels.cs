@@ -38,6 +38,7 @@ namespace ClassLibrary.Core.Models
         public DbSet<Group> Groups { get; set; }
         public DbSet<Discipline> Disciplines { get; set; }
         public DbSet<StudentTask> StudentTasks { get; set; }
+        public DbSet<Solution> Solutions { get; set; }
 
         public static ApplicationDbContext Create()
         {
