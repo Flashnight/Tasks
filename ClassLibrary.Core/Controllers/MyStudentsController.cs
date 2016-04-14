@@ -13,6 +13,7 @@ namespace ClassLibrary.Core.Controllers
         ApplicationDbContext db = new ApplicationDbContext();
 
         [HttpGet]
+        [Authorize(Roles = "teacher")]
         public ActionResult NewTask()
         {
             var students = db.Users;
@@ -25,6 +26,7 @@ namespace ClassLibrary.Core.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "teacher")]
         public string NewTask(StudentTask task)
         {
             db.StudentTasks.Add(task);
