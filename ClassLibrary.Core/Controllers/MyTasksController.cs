@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using ClassLibrary.Core.Models;
 using Microsoft.AspNet.Identity;
+using System.Web;
+using System.IO;
 
 namespace ClassLibrary.Core.Controllers
 {
@@ -48,6 +47,23 @@ namespace ClassLibrary.Core.Controllers
             ViewBag.Task = task;    //передать задания в представление
 
             return View();
+        }
+
+        [Authorize(Roles = "student")]
+        [HttpPost]
+        public ActionResult UploadSolution(HttpPostedFileBase upload)
+        {
+            if(upload!=null)
+            {
+                //Получение имени файла
+                string fileName = Path.GetFileName(upload.FileName);
+
+                //Сохранение файла решения в папку Solutions
+                upload.SaveAs(Server.MapPath("~/Solutions/" + fileName));
+            }
+
+            //Перенаправить на список заданий
+            return RedirectToAction("List");
         }
     }
 }
