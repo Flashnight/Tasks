@@ -1,74 +1,60 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Web;
 using System.Web.Mvc;
-using ClassLibrary.Core.Models;
 using Microsoft.AspNet.Identity;
-using System.Web;
-using System.IO;
-using System;
+using ClassLibrary.Core.Models;
+using ClassLibrary.Core.Service;
 
 namespace ClassLibrary.Core.Controllers
 {
     public class MyTasksController : Controller
     {
-        ApplicationDbContext db = new ApplicationDbContext();
-
+        // Метод, передающий список заданий студента в представление.
+        //
         [Authorize(Roles = "student")]
         public ActionResult List(int? disciplineId)
         {
-            IQueryable<StudentTask> studentTasks = db.StudentTasks.Include("Discipline");
+            // Id текущего пользователя.
+            string currentUserId = User.Identity.GetUserId();   
 
-            string currentUserId = User.Identity.GetUserId();   //id текущего пользователя
+            // Получить список заданий из базы данных.
+            MyTasksListViewModel myTasksListViewModel = MyTasksService.GetMyTaskList(disciplineId,currentUserId);
 
-            studentTasks = studentTasks.Where(p => p.UserId == currentUserId);  //получить все задачи пользователя
-
-            if (disciplineId != null && disciplineId != 0)
-            {
-                studentTasks = studentTasks.Where(p => p.DisciplineId == disciplineId); //отфильтровать задания по выбранной дисциплине
-            }
-
-            List<Discipline> disciplines = db.Disciplines.ToList();//список дисциплин
-
-            disciplines.Insert(0, new Discipline { Name = "Все дисциплины", DisciplineId = 0 });   //выбрать все задания
-
-            MyTasksListViewModel mtlvm = new MyTasksListViewModel   //данные, которые будут переданы в представление
-            {
-                StudentTasks = studentTasks.ToList(),
-                Disciplines = new SelectList(disciplines, "DisciplineId","name")
-            };
-
-            return View(mtlvm);
+            return View(myTasksListViewModel);
         }
 
+        // Метод, передающий информацию о задании в представление.
+        //
         [Authorize(Roles = "student")]
         public ActionResult Description(int taskId)
         {
-            StudentTask task = db.StudentTasks.FirstOrDefault<StudentTask>(p => p.StudentTaskId == taskId); //найти задачу по id в базе данных
+            // Получить информацию о задании из бд.
+            StudentTask task = MyTasksService.GetMyTask(taskId);
 
-            ViewBag.Task = task;    //передать задания в представление
+            //передать задания в представление.
+            ViewBag.Task = task;    
 
             return View();
         }
 
+        // Метод, загружающий файл решения задания в папку Solutions проекта
+        // и сохраняющий имя файла в базу данных.
+        //
         [Authorize(Roles = "student")]
         [HttpPost]
         public ActionResult UploadSolution(int taskId, HttpPostedFileBase upload)
         {
+            // Если указан файл, то загрузить его на сервер.
+            //
             if(upload!=null)
             {
-                //Присвоить файлу случайное имя через Guid
-                string fileName = string.Format("{0}.{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
+                // Получить физический путь к папке с решениями.
+                string path = Server.MapPath("~/Solutions/");
 
-                //Сохранение файла решения в папку Solutions
-                upload.SaveAs(Server.MapPath("~/Solutions/" + fileName));
-
-                //Сохранение ссылки на файл в базе данных
-                Solution NewSolution = new Solution { Path = fileName, StudentTaskId = taskId };
-                db.Solutions.Add(NewSolution);
-                db.SaveChanges();
+                // Сохранить файл решения в файловой системе.
+                MyTasksService.UploadSolution(taskId, upload, path);
             }
 
-            //Перенаправить на список заданий
+            //Перенаправить на список заданий.
             return RedirectToAction("List");
         }
     }
