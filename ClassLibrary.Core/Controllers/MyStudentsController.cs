@@ -11,20 +11,32 @@ namespace ClassLibrary.Core.Controllers
     public class MyStudentsController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
-
+        
+        // Метод, передающий в представление список студентов и предметов
+        //
         [HttpGet]
         [Authorize(Roles = "teacher")]
         public ActionResult NewTask()
         {
-            var students = db.Users;
-            ViewData["AllStudents"] = from User in db.Users select new SelectListItem { Text = User.LastName + " " + User.FirstName, Value = User.Id.ToString() };
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
-            var disciplines = db.Disciplines;
-            ViewData["AllDisciplines"] = from Discipline in db.Disciplines select new SelectListItem { Text = Discipline.Name, Value = Discipline.DisciplineId.ToString() };
+            // Передать в представление список студентов
+            //
+            IEnumerable<SelectListItem> students = db.Users.Select(s => new SelectListItem { Text = s.LastName + " " + s.FirstName, Value = s.Id });
+            // Отфильтровать список пользователей, оставив только студентов
+            students = students.Where(s => userManager.GetRoles(s.Value).Contains("student"));
+            ViewData["AllStudents"] = students;
+
+            // Передать в представление список предметов
+            //
+            IEnumerable<SelectListItem> disciplines = db.Disciplines.Select(s => new SelectListItem { Text = s.Name, Value = s.DisciplineId.ToString() });
+            ViewData["AllDisciplines"] = disciplines;
 
             return View();
         }
 
+        // Метод, сохраняющий новое задание в базу данных
+        //
         [HttpPost]
         [Authorize(Roles = "teacher")]
         public string NewTask(StudentTask task)
@@ -36,7 +48,7 @@ namespace ClassLibrary.Core.Controllers
             return "Задача успешно добавлена";
         }
 
-        // Контроллер, передающий в представление данные о заданиях, выданных студентам.
+        // Метод, передающий в представление данные о заданиях, выданных студентам.
         //
         [Authorize(Roles = "teacher")]
         public ActionResult TasksList(string userId, int? disciplineId)
