@@ -1,0 +1,62 @@
+﻿@model ClassLibrary.Core.Models.AllStudentsTasksListViewModel
+
+@{
+    ViewBag.Title = "Задания студентов";
+}
+
+<h2>Задания студентов</h2>
+
+<h4>
+    @Html.ActionLink("Добавить новое задание", "NewTask")
+</h4>
+
+<form class="col-md-offset-1" method="get">
+    <div class="form-group">
+        <div class="col-md-4">
+            @Html.DropDownList("userId", Model.Students as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownList("disciplineId", Model.Disciplines as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <input type="submit" value="Применить фильтр" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+<hr class="col-md-offset-1 col-md-10" />
+
+<div class="col-md-offset-1 col-md-10">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-md-2">Фамилия</th>
+                <th class="col-md-2">Имя</th>
+                <th class="col-md-2">Дисциплина</th>
+                <th class="col-md-6">Задание</th>
+                <th class="col-md-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StudentTasks)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discipline.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="text-right">
+                        <a href>Подробнее</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

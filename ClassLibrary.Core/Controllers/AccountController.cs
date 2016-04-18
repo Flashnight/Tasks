@@ -82,21 +82,24 @@ namespace ClassLibrary.Core.Controllers
                 //Если авторизация прошла успешно
                 case SignInStatus.Success:
                     {
-                        //Список ролей пользователя
+                        // Список ролей пользователя
                         IList<string> Roles = new List<string>();
-                        //Получение данных об авторизовавшемся пользователе
+                        // Получение данных об авторизовавшемся пользователе
                         ApplicationUserManager UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                         ApplicationUser User = UserManager.FindByEmail(model.Email);
 
-                        //Сохранение в списке всех ролей пользователя
+                        // Сохранение в списке всех ролей пользователя
                         if (User != null)
                             Roles = UserManager.GetRoles(User.Id);
 
-                        //Перенаправление пользователя после авторизации в зависимости от заданной роли
+                        // Перенаправление пользователя после авторизации в зависимости от заданной роли.
+                        //
+                        // Если пользователь преподаватель, то перенаправить на страницу с заданиями студентов.
                         if (Roles.Where(p => p == "teacher").Count() != 0)
                         {
-                            return RedirectToRoute(new { controller = "MyStudents", action = "NewTask" });
+                            return RedirectToRoute(new { controller = "MyStudents", action = "TasksList" });
                         }
+                        // Иначе - перенаправить на страницу заданий студента
                         else
                             return RedirectToRoute(new { controller = "MyTasks", action = "List" });
                     }
