@@ -277,9 +277,11 @@
     <Content Include="Views\MyTasks\List.cshtml" />
     <Content Include="Views\MyTasks\Description.cshtml" />
     <Content Include="Views\MyStudents\NewTask.cshtml" />
+    <Content Include="Views\MyStudents\TasksList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Solutions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

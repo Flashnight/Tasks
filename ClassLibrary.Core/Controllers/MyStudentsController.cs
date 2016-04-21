@@ -1,37 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using ClassLibrary.Core.Models;
+﻿//-----------------------------------------------------------------------
+// <copyright file = "MyStudentsController.cs" company="OmSTU">
+// Copyright (c) OmSTU. All rights reserved.
+// </copyright>
+// <author> Рудгальский Михаил </author>
+// <author> Федоров Виталий </author>
+// <author> Денисов Олег </author>
+//-----------------------------------------------------------------------
 
 namespace ClassLibrary.Core.Controllers
 {
+    using System.Web.Mvc;
+    using ClassLibrary.Core.Models;
+    using ClassLibrary.Core.Service;
+
+    /// <summary>
+    /// Предоставляет контроллер с методами для работы с данными о студентах и выполненных ими заданиях.
+    /// </summary>
     public class MyStudentsController : Controller
     {
-        ApplicationDbContext db = new ApplicationDbContext();
-
+        /// <summary>
+        /// Передает в представление список студентов и предметов.
+        /// </summary>
+        /// <returns>
+        /// Представление, позволяющее добавить новое задание для студента.
+        /// </returns>
         [HttpGet]
+        [Authorize(Roles = "teacher")]
         public ActionResult NewTask()
         {
-            var students = db.Users;
-            ViewData["AllStudents"] = from User in db.Users select new SelectListItem { Text = User.LastName + " " + User.FirstName, Value = User.Id.ToString() };
+            // Передать в представление список студентов.
+            this.ViewData["AllStudents"] = MyStudentsService.GetAllStudents();
 
-            var disciplines = db.Disciplines;
-            ViewData["AllDisciplines"] = from Discipline in db.Disciplines select new SelectListItem { Text = Discipline.Name, Value = Discipline.DisciplineId.ToString() };
+            // Передать в представление список предметов.
+            this.ViewData["AllDisciplines"] = MyStudentsService.GetAllGroups();
 
-            return View();
+            return this.View();
         }
 
+        /// <summary>
+        /// Передает новое задание в базу данных.
+        /// </summary>
+        /// <param name="task">
+        /// Передаваемое задание.
+        /// </param>
+        /// <returns>
+        /// Перенаправление на представление со списком студентов и предметов.
+        /// </returns>
         [HttpPost]
-        public string NewTask(StudentTask task)
+        [Authorize(Roles = "teacher")]
+        public ActionResult NewTask(StudentTask task)
         {
-            db.StudentTasks.Add(task);
+            MyStudentsService.AddTask(task);
 
-            db.SaveChanges();
+            return this.RedirectToAction("TasksList");
+        }
 
-            return "Задача успешно добавлена";
+        /// <summary>
+        /// Передает в представление список студентов и заданий, выданных им.
+        /// </summary>
+        /// <param name="userId">
+        /// Идентификатор студента в базе данных.
+        /// </param>
+        /// <param name="disciplineId">
+        /// Идентификатор учебной дисциплины в базе данных.
+        /// </param>
+        /// <returns>
+        /// Представление со списком заданий всех студентов.
+        /// </returns>
+        [Authorize(Roles = "teacher")]
+        public ActionResult TasksList(string userId, int? disciplineId)
+        {
+            // Получить данные обо всех заданиях, выданных каждому студенту.
+            AllStudentsTasksListViewModel allStudentsTasksListViewModel = MyStudentsService.GetStudentsTasksList(userId, disciplineId);
+
+            return this.View(allStudentsTasksListViewModel);
         }
     }
 }
