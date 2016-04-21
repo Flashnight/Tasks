@@ -1,22 +1,46 @@
 ﻿@model ClassLibrary.Core.Models.StudentTask
+
 @{
     ViewBag.Title = ViewBag.Task.Title;
 }
-<div class="row col-md-offset-3 col-md-6">
+
+@section Scripts {
+    <script>
+        document.getElementById("upload-button").onchange = function () {
+            document.getElementById("file-path").value = this.value;
+        };
+    </script>
+    <script>
+        document.getElementById("file-path").onchange = function () {
+            document.getElementById("submit-button").disabled = "";
+        };
+    </script>
+}
+
+<br />
+
+<div class="row col-md-offset-2 col-md-8">
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3>@ViewBag.Task.Title</h3>
-        </div>
         <div class="panel-body">
-            @ViewBag.Task.Description
+            <div class="col-md-offset-1 col-md-10">
+                <h3>@ViewBag.Task.Title</h3>
+                <hr />
+                @ViewBag.Task.Description
+            </div>
         </div>
         <div class="panel-footer">
-            <h4>Отправить решение</h4>
             @using (Html.BeginForm("UploadSolution", "MyTasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <input type="hidden" name="taskId" value= @ViewBag.Task.StudentTaskId />
-                <input type="file" name="upload" /><br>
-                <input type="submit" value="Загрузить" class="btn btn-primary" />
+                <div class="text-center">
+                    <p>Для загрузки решения выберите документ</p>
+                    <input type="hidden" name="taskId" value="@ViewBag.Task.StudentTaskId" />
+                    <div class="btn btn-primary file-upload">
+                        <span>Выбрать документ</span>
+                        <input id="upload-button" type="file" class="upload" />
+                    </div>
+                    <input id="file-path" placeholder="Файл не выбран" disabled="disabled" style="margin-right:10px" />
+                    <input id="submit-button" type="submit" value="Отправить решение" class="btn btn-primary" />
+                </div>
             }
         </div>
     </div>
@@ -40,17 +64,17 @@
 
 
 @*
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Task.Title</title>
-</head>
-<body>
-    <div>
-        <h3>@ViewBag.Task.Title</h3>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>@ViewBag.Task.Title</title>
+    </head>
+    <body>
+        <div>
+            <h3>@ViewBag.Task.Title</h3>
 
-        <p>@ViewBag.Task.Description</p>
-    </div>
-</body>
-</html>*@
+            <p>@ViewBag.Task.Description</p>
+        </div>
+    </body>
+    </html>*@

@@ -23,29 +23,29 @@
 <hr class="col-md-offset-1 col-md-10" />
 
 <div class="col-md-offset-1 col-md-10">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="col-md-2">Дисциплина</th>
-                <th class="col-md-6">Задание</th>
-                <th class="col-md-2"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.StudentTasks)
-            {
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Discipline.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td class="text-right">
-                        <a href="/MyTasks/Description?taskId=@item.StudentTaskId">Подробнее</a>
-                    </td>
+                    <th class="col-md-2">Дисциплина</th>
+                    <th class="col-md-6">Задание</th>
+                    <th class="col-md-2"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StudentTasks)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Discipline.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td class="text-right">
+                            <a href="/MyTasks/Description?taskId=@item.StudentTaskId">Подробнее</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
