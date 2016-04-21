@@ -1,24 +1,9 @@
 ﻿@model ClassLibrary.Core.Models.StudentTask
-
 @{
     ViewBag.Title = ViewBag.Task.Title;
 }
 
-@section Scripts {
-    <script>
-        document.getElementById("upload-button").onchange = function () {
-            document.getElementById("file-path").value = this.value;
-        };
-    </script>
-    <script>
-        document.getElementById("file-path").onchange = function () {
-            document.getElementById("submit-button").disabled = "";
-        };
-    </script>
-}
-
 <br />
-
 <div class="row col-md-offset-2 col-md-8">
     <div class="panel panel-default">
         <div class="panel-body">
@@ -29,38 +14,16 @@
             </div>
         </div>
         <div class="panel-footer">
+            <h4>Отправить решение</h4>
             @using (Html.BeginForm("UploadSolution", "MyTasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <div class="text-center">
-                    <p>Для загрузки решения выберите документ</p>
-                    <input type="hidden" name="taskId" value="@ViewBag.Task.StudentTaskId" />
-                    <div class="btn btn-primary file-upload">
-                        <span>Выбрать документ</span>
-                        <input id="upload-button" type="file" class="upload" />
-                    </div>
-                    <input id="file-path" placeholder="Файл не выбран" disabled="disabled" style="margin-right:10px" />
-                    <input id="submit-button" type="submit" value="Отправить решение" class="btn btn-primary" />
-                </div>
+                <input type="hidden" name="taskId" value=@ViewBag.Task.StudentTaskId />
+                <input type="file" name="upload" /><br>
+                <input type="submit" value="Загрузить" class="btn btn-primary" />
             }
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @*
