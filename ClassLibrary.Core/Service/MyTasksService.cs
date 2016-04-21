@@ -1,41 +1,64 @@
-﻿using System;
-using System.Web;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Web.Mvc;
-using ClassLibrary.Core.Models;
+﻿//-----------------------------------------------------------------------
+// <copyright file = "MyTasksService.cs" company="OmSTU">
+// Copyright (c) OmSTU. All rights reserved.
+// </copyright>
+// <author> Рудгальский Михаил </author>
+// <author> Федоров Виталий </author>
+// <author> Денисов Олег </author>
+//-----------------------------------------------------------------------
 
 namespace ClassLibrary.Core.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using ClassLibrary.Core.Models;
+
+    /// <summary>
+    /// Предоставляет методы для работы с данными о собственных заданиях студента.
+    /// </summary>
     public static class MyTasksService
     {
-        static ApplicationDbContext _dataBase = new ApplicationDbContext();
+        /// <summary>
+        /// Контекст базы данных
+        /// </summary>
+        private static ApplicationDbContext dataBase = new ApplicationDbContext();
 
-        // Метод, возвращающий список заданий студента.
-        //
+        /// <summary>
+        /// Возвращает список заданий студента.
+        /// </summary>
+        /// <param name="disciplineId">
+        /// Идентификатор дисциплины в базе данных.
+        /// </param>
+        /// <param name="currentUserId">
+        /// Идентификатор текущего пользователя (студента) в базе данных.
+        /// </param>
+        /// <returns>
+        /// Представление, отображающее фильтруемый список заданий текущего студента.
+        /// </returns>
         public static MyTasksListViewModel GetMyTaskList(int? disciplineId, string currentUserId)
         {
-            IQueryable<StudentTask> studentTasks = _dataBase.StudentTasks.Include("Discipline");
+            IQueryable<StudentTask> studentTasks = dataBase.StudentTasks.Include("Discipline");
 
-            // получить все задачи пользователя.
+            // Получить все задачи пользователя.
             studentTasks = studentTasks.Where(p => p.UserId == currentUserId);
 
-            //отфильтровать задания по выбранной дисциплине, если та указана.
-            //
+            // Отфильтровать задания по выбранной дисциплине, если та указана.
             if (disciplineId != null && disciplineId != 0)
             {
                 studentTasks = studentTasks.Where(p => p.DisciplineId == disciplineId); 
             }
 
-            //список дисциплин.
-            List<Discipline> disciplines = _dataBase.Disciplines.ToList();
+            // Список дисциплин.
+            List<Discipline> disciplines = dataBase.Disciplines.ToList();
 
-            //выбрать все задания.
+            // Выбрать все задания.
             disciplines.Insert(0, new Discipline { Name = "Все дисциплины", DisciplineId = 0 });
 
-            //данные, которые будут переданы в представление.
-            //
+            // Данные, которые будут переданы в представление.
             MyTasksListViewModel myTasksListViewModel = new MyTasksListViewModel   
             {
                 StudentTasks = studentTasks.ToList(),
@@ -45,34 +68,50 @@ namespace ClassLibrary.Core.Service
             return myTasksListViewModel;
         }
 
-        // Метод, возвращающий описание задания.
-        //
+        /// <summary>
+        /// Возвращает описание задания.
+        /// </summary>
+        /// <param name="taskId">
+        /// Идентификатор задания в базе данных.
+        /// </param>
+        /// <returns>
+        /// Данные о задании.
+        /// </returns>
         public static StudentTask GetMyTask(int taskId)
         {
-            //найти задачу по id в базе данных.
-            StudentTask task = _dataBase.StudentTasks.FirstOrDefault<StudentTask>(p => p.StudentTaskId == taskId);
+            // Найти задачу по id в базе данных.
+            StudentTask task = dataBase.StudentTasks.FirstOrDefault<StudentTask>(p => p.StudentTaskId == taskId);
 
             return task;
         }
 
-        // Метод, сохраняющий файл с решение задания в файловую систему
-        // и сохраняющий имя файла в базу данных.
-        //
+        /// <summary>
+        /// Сохраняет файл с решением задания в файловую систему,
+        /// задаёт ему случайное имя и сохраняет имя файла в базу данных.
+        /// </summary>
+        /// <param name="taskId">
+        /// Идентификатор задания.
+        /// </param>
+        /// <param name="upload">
+        /// Данные о загружаемом файле.
+        /// </param>
+        /// <param name="path">
+        /// Путь к папке с решениями.
+        /// </param>
         public static void UploadSolution(int taskId, HttpPostedFileBase upload, string path)
         {
-            if(upload!=null)
+            if (upload != null)
             {
-                //Присвоить файлу случайное имя через Guid.
+                // Присвоить файлу случайное имя через Guid.
                 string fileName = string.Format("{0}.{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
 
-                //Сохранить файл решения.
+                // Сохранить файл решения.
                 upload.SaveAs(path + fileName);
 
-                //Сохранить имя файла в базе данных.
-                //
-                Solution NewSolution = new Solution { Path = fileName, StudentTaskId = taskId };
-                _dataBase.Solutions.Add(NewSolution);
-                _dataBase.SaveChanges();
+                // Сохранить имя файла в базе данных.
+                Solution newSolution = new Solution { Path = fileName, StudentTaskId = taskId };
+                dataBase.Solutions.Add(newSolution);
+                dataBase.SaveChanges();
             }
         }
     }

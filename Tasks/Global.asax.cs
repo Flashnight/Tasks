@@ -13,7 +13,7 @@ namespace Tasks
     {
         protected void Application_Start()
         {
-            //Добавление данных по умолчанию в базу данных
+            // Добавление данных по умолчанию в базу данных
             Database.SetInitializer<ClassLibrary.Core.Models.ApplicationDbContext>(new ClassLibrary.Core.App_Start.AppDbInitializer());
 
             AreaRegistration.RegisterAllAreas();

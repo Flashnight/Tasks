@@ -1,17 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿//-----------------------------------------------------------------------
+// <copyright file = "AllStudentsTasksListViewModel.cs" company="OmSTU">
+// Copyright (c) OmSTU. All rights reserved.
+// </copyright>
+// <author> Рудгальский Михаил </author>
+// <author> Федоров Виталий </author>
+// <author> Денисов Олег </author>
+//-----------------------------------------------------------------------
 
 namespace ClassLibrary.Core.Models
 {
-    // Модель данных, используемых для выбора заданий всех студентов.
-    //
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+
+    /// <summary>
+    /// Предоставляет модель данных для фильтрации списка заданий 
+    /// </summary>
     public class AllStudentsTasksListViewModel
     {
-        // Список заданий всех студентов
+        /// <summary>
+        /// Список всех заданий.
+        /// </summary>
         public IEnumerable<StudentTask> StudentTasks { get; set; }
-        // Список учебных дисциплин.
+
+        /// <summary>
+        /// Список всех дисциплин.
+        /// </summary>
         public SelectList Disciplines { get; set; }
-        // Список студентов
+
+        /// <summary>
+        /// Список всех студентов.
+        /// </summary>
         public SelectList Students { get; set; }
     }
 }
