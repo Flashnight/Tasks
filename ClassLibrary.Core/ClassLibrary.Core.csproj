@@ -123,6 +123,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AppDbInitializer.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -130,13 +131,17 @@
     <Compile Include="Controllers\MyStudentsController.cs" />
     <Compile Include="Controllers\MyTasksController.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AllStudentsTasksListViewModel.cs" />
     <Compile Include="Models\Discipline.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyTasksListViewModel.cs" />
+    <Compile Include="Models\Solution.cs" />
     <Compile Include="Models\StudentTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\MyStudentsService.cs" />
+    <Compile Include="Service\MyTasksService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

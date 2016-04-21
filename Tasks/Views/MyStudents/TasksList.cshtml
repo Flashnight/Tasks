@@ -1,0 +1,70 @@
+﻿@model ClassLibrary.Core.Models.AllStudentsTasksListViewModel
+
+@{
+    ViewBag.Title = "Задания";
+}
+
+<h2>
+    @ViewBag.Title
+    <small><p>Список заданий для студентов</p></small>
+</h2>
+<hr />
+
+<form class="col-md-offset-1" method="get">
+    <div class="form-group">
+        <div class="col-md-4">
+            @Html.DropDownList("userId", Model.Students as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            @Html.DropDownList("disciplineId", Model.Disciplines as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <input type="submit" value="Применить фильтр" class="btn btn-primary" />        
+            <a href="/MyStudents/NewTask" class="btn btn-primary" role="button" style="margin-left:10px">Добавить задание</a>            
+        </div>
+    </div>
+</form>
+<hr class="col-md-offset-1 col-md-10" />
+
+<div class="col-md-offset-1 col-md-10">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-md-2">Студент</th>                
+                <th class="col-md-2">Дисциплина</th>
+                <th class="col-md-6">Задание</th>
+                <th class="col-md-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StudentTasks)
+            {
+                <tr data-toggle="collapse" data-target="#@item.StudentTaskId">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.LastName)
+                        @Html.DisplayFor(modelItem => item.User.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discipline.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="text-right">
+                        <a href="#">Подробнее</a>
+                    </td>
+                </tr>
+                <tr id="@item.StudentTaskId" class="collapse">
+                    <td />
+                    <td />
+                    <td>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.Description)                            
+                        </div>
+                    </td>
+                    <td />
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
