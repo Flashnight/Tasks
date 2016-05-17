@@ -11,7 +11,7 @@ namespace ClassLibrary.Core.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using System.Web.Mvc;
     /// <summary>
     /// Предоставляет модель данных о задании.
     /// </summary>
@@ -20,6 +20,7 @@ namespace ClassLibrary.Core.Models
         /// <summary>
         /// Идентификатор задания.
         /// </summary>
+        [HiddenInput(DisplayValue = false)]
         [Key]
         public int StudentTaskId { get; set; }
 
@@ -27,23 +28,28 @@ namespace ClassLibrary.Core.Models
         /// Наименование задания.
         /// </summary>
         [Required]
+        [Display(Name = "Заголовок")]
         public string Title { get; set; }
 
         /// <summary>
         /// Описание задания.
         /// </summary>
         [Required]
+        [Display(Name = "Описание")]
         public string Description { get; set; }
 
         /// <summary>
         /// Идентификатор студента в базе данных, которому выдано задание.
         /// </summary>
         [Required]
+        [Display(Name = "Студент")]
         public string UserId { get; set; }
 
         /// <summary>
         /// Идентификатор учебной дисциплины в базе данных, по которой выдано данное задание.
         /// </summary>
+        [Required]
+        [Display(Name="Дисциплина")]
         public int DisciplineId { get; set; }
 
         /// <summary>

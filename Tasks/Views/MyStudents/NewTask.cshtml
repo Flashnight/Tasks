@@ -17,6 +17,7 @@
         @Html.LabelFor(model => model.UserId, "Студент", new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
             @Html.DropDownListFor(model => model.UserId, (IEnumerable<SelectListItem>)ViewData["AllStudents"], "Выберите студента", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.UserId)
         </div>
     </div>
 
@@ -24,6 +25,7 @@
         @Html.LabelFor(model => model.DisciplineId, "Дисциплина", new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
             @Html.DropDownListFor(model => model.DisciplineId, (IEnumerable<SelectListItem>)ViewData["AllDisciplines"], "Выберите дисциплину", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DisciplineId)
         </div>
     </div>
 
@@ -31,6 +33,7 @@
         @Html.LabelFor(model => model.Title, "Заголовок", new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
             @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "Введите заголовок" })
+            @Html.ValidationMessageFor(model => model.Title)
         </div>
     </div>
 
@@ -38,6 +41,7 @@
         @Html.LabelFor(model => model.Description, "Описание", new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
             @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5", placeholder = "Введите описание" })
+            @Html.ValidationMessageFor(model => model.Description)
         </div>
     </div>
 
@@ -46,4 +50,8 @@
             <input type="submit" class="btn btn-primary btn-block" value="Отправить" />
         </div>
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }
