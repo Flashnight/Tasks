@@ -22,7 +22,16 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Список заданий", "List", "MyTasks")</li>
+                    <li>
+                    @if (User.IsInRole("student"))
+                    {
+                        @Html.ActionLink("Список заданий", "List", "MyTasks")
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Список заданий", "TasksList", "MyStudents")
+                    }
+                    </li>
                     <li>@Html.ActionLink("О программе", "About", "Home")</li>
                     <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
                 </ul>
