@@ -107,8 +107,8 @@ namespace ClassLibrary.Core.Service
             // Вставить значение "все дисциплины" для выпадающего списка.
             disciplines.Insert(0, new Discipline { Name = "Все дисциплины", DisciplineId = 0 });
 
-            // Сформировать список пользователей в формате "имя фамилия" для выпадающего списка.
-            var students = dataBase.Users.Select(s => new { Id = s.Id, Name = s.LastName + " " + s.FirstName }).ToList();
+            // Сформировать список пользователей в формате "группа имя фамилия" для выпадающего списка.
+            var students = dataBase.Users.Select(s => new { Id = s.Id, Name = s.Group.Name + " " + s.LastName + " " + s.FirstName }).OrderBy(s => s.Name).ToList();
 
             // Отфильтровать пользователей и сохранить в списке только студентов.
             ApplicationUserManager userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
