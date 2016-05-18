@@ -51,7 +51,10 @@
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
                     <td class="text-right">
-                        <a href="#">Подробнее</a>
+                        @if (item.NewSolutionIsExist)
+                        {
+                            <a href="/MyStudents/Solution?taskId=@item.StudentTaskId">Есть новое решение.</a>
+                        }
                     </td>
                 </tr>
                 <tr id="@item.StudentTaskId" class="collapse">

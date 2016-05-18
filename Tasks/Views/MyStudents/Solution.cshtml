@@ -1,0 +1,27 @@
+﻿@model ClassLibrary.Core.Models.StudentTask
+@{
+    ViewBag.Title = "Решение задания";
+}
+
+<h2>Решение</h2>
+
+<div class="row col-md-offset-2 col-md-8">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-offset-1 col-md-10">
+                <p>Выдано студенту @ViewBag.StudentsName</p>
+                <p>Группы @ViewBag.StudentsGroup</p>
+                <p>Задание: @ViewBag.TaskTitle</p>
+                <p>Подробности: @ViewBag.TaskDescription</p>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <h4>Загрузить решение</h4>
+            @using (Html.BeginForm("DownloadSolution", "MyStudents", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="hidden" name="solutionPath" value=@ViewBag.SolutionPath />
+                <input type="submit" value="Загрузить" class="btn btn-primary" />
+            }
+        </div>
+    </div>
+</div>

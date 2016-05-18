@@ -16,6 +16,7 @@ namespace ClassLibrary.Core.Service
     using ClassLibrary.Core.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
+    using System.Data.Entity;
 
     /// <summary>
     /// Предоставляет методы для работы с данными о студентах и выполненных ими заданиях.
@@ -67,8 +68,10 @@ namespace ClassLibrary.Core.Service
         /// </param>
         public static void AddTask(StudentTask task)
         {
-            dataBase.StudentTasks.Add(task);
+            task.NewSolutionIsExist = false;
+            task.Points = 0;
 
+            dataBase.StudentTasks.Add(task);
             dataBase.SaveChanges();
         }
 
@@ -126,6 +129,70 @@ namespace ClassLibrary.Core.Service
             };
 
             return allStudentsTasksListViewModel;
+        }
+
+        /// <summary>
+        /// Возвращает студента, которому выдано задание.
+        /// </summary>
+        /// <param name="taskId">
+        /// Идентификатор задания.
+        /// </param>
+        /// <returns>
+        /// Информация о студенте.
+        /// </returns>
+        public static ApplicationUser GetStudent(int taskId)
+        {
+            StudentTask task = dataBase.StudentTasks.First(t => t.StudentTaskId == taskId);
+            ApplicationUser user = dataBase.Users.First(p => p.Id == task.UserId);
+
+            return user;
+        }
+
+        /// <summary>
+        /// Возвращает решение задания.
+        /// </summary>
+        /// <param name="taskId">
+        /// Идентификатор задания.
+        /// </param>
+        /// <returns>
+        /// Информация о решении задания.
+        /// </returns>
+        public static Solution GetSolution(int taskId)
+        {
+            Solution solution = dataBase.Solutions.Where(p => p.StudentTaskId == taskId).OrderByDescending(p => p.StudentTaskId).First();
+
+            return solution;
+        }
+
+        /// <summary>
+        /// Возвращает информацию о задании по его id.
+        /// </summary>
+        /// <param name="taskId">
+        /// Идентификатор задания.
+        /// </param>
+        /// <returns>
+        /// Информация о задании.
+        /// </returns>
+        public static StudentTask GetTask(int taskId)
+        {
+            StudentTask task = dataBase.StudentTasks.First(p => p.StudentTaskId == taskId);
+
+            return task;
+        }
+
+        /// <summary>
+        /// Записывает информацию об отсутствии нового решения задания в базу данных.
+        /// </summary>
+        /// <param name="taskId">
+        /// Идентификатор задания.
+        /// </param>
+        public static void UpdateOfStateTask(int taskId)
+        {
+            StudentTask task = dataBase.StudentTasks.First(p => p.StudentTaskId == taskId);
+            task.NewSolutionIsExist = false;
+
+            dataBase.Entry(task).State = EntityState.Modified;
+            dataBase.SaveChanges();
         }
     }
 }

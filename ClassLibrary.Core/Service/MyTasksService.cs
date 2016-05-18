@@ -16,6 +16,7 @@ namespace ClassLibrary.Core.Service
     using System.Web;
     using System.Web.Mvc;
     using ClassLibrary.Core.Models;
+    using System.Data.Entity;
 
     /// <summary>
     /// Предоставляет методы для работы с данными о собственных заданиях студента.
@@ -103,7 +104,7 @@ namespace ClassLibrary.Core.Service
             if (upload != null)
             {
                 // Присвоить файлу случайное имя через Guid.
-                string fileName = string.Format("{0}.{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
+                string fileName = string.Format("{0}{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
 
                 // Сохранить файл решения.
                 upload.SaveAs(path + fileName);
@@ -111,6 +112,13 @@ namespace ClassLibrary.Core.Service
                 // Сохранить имя файла в базе данных.
                 Solution newSolution = new Solution { Path = fileName, StudentTaskId = taskId };
                 dataBase.Solutions.Add(newSolution);
+                
+
+                // Добавить оповещение о новом решении.
+                StudentTask task = dataBase.StudentTasks.Where(p => p.StudentTaskId == taskId).First();
+                task.NewSolutionIsExist = true;
+                dataBase.Entry(task).State = EntityState.Modified;
+
                 dataBase.SaveChanges();
             }
         }
