@@ -24,7 +24,7 @@ namespace UnitTestProject1
         /// <summary>
         /// Тестовый идентификатор пользователя
         /// </summary>
-        private string userId = "058e9ca6-36ee-4523-b1d3-713351cc212a";
+        private string userId = "dc414eb3-6be5-47da-a31c-fa575f64a17f";
 
         /// <summary>
         /// Тестовый идентификатор дисциплины.
@@ -37,9 +37,17 @@ namespace UnitTestProject1
         [TestMethod]
         public void AddTaskTest()
         {
-            StudentTask task = new StudentTask { Title = "Пример", Description = "Пример", UserId = userId, DisciplineId = disciplineId, Points = 0, MaxPoints = 100, NewSolutionIsExist = false };
+            StudentTask task = new StudentTask { Title = "Пример", Description = "Пример", UserId = userId, DisciplineId = disciplineId,  MaxPoints = 100 };
 
             MyStudentsService.AddTask(task);
+        }
+
+        [TestMethod]
+        public void UpdateTaskTest()
+        {
+            StudentTask task = new StudentTask { StudentTaskId = 8, Title = "Пример2", Description = "Пример2", UserId = userId, DisciplineId = 2, MaxPoints = 100 };
+
+            MyStudentsService.UpdateTask(task);
         }
     }
 }
