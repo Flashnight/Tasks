@@ -77,6 +77,7 @@ namespace ClassLibrary.Core.Service
             task.NewSolutionIsExist = false;
             task.Points = 0;
 
+            // Сохранить изменения.
             dataBase.StudentTasks.Add(task);
             dataBase.SaveChanges();
         }
@@ -135,7 +136,10 @@ namespace ClassLibrary.Core.Service
             foreach(var item in solutions)
             {
                 // Удалить файлы решений.
-                File.Delete(pathToSolution + item.Path);
+                if (File.Exists(pathToSolution + item.Path))
+                {
+                    File.Delete(pathToSolution + item.Path);
+                }
 
                 // Удалить запись о решении.
                 dataBase.Entry(item).State = EntityState.Deleted;

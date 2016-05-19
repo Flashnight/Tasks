@@ -113,6 +113,21 @@ namespace ClassLibrary.Core.Service
                 // Сохранить файл решения.
                 upload.SaveAs(path + fileName);
 
+                // Удалить все прочие решения.
+                IQueryable<Solution> solutions = dataBase.Solutions.Where(p => p.StudentTaskId == taskId);
+
+                foreach(var item in solutions)
+                {
+                    // Удалить файл решения.
+                    if (File.Exists(path + item.Path))
+                    {
+                        File.Delete(path + item.Path);
+                    }
+
+                    // Удалить запись из базы данных.
+                    dataBase.Entry(item).State = EntityState.Deleted;
+                }
+
                 // Сохранить имя файла в базе данных.
                 Solution newSolution = new Solution { Path = fileName, StudentTaskId = taskId };
                 dataBase.Solutions.Add(newSolution);
