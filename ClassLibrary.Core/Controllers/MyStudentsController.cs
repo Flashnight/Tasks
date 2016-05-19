@@ -14,6 +14,7 @@ namespace ClassLibrary.Core.Controllers
     using ClassLibrary.Core.Service;
     using System.IO;
     using System.Net.Mime;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Предоставляет контроллер с методами для работы с данными о студентах и выполненных ими заданиях.
@@ -84,31 +85,65 @@ namespace ClassLibrary.Core.Controllers
         /// <param name="taskId">
         /// Идентификатор решенного задания.
         /// </param>
-        /// <returns></returns>
+        /// <returns>
+        /// Представление с информацией о решенном задании.
+        /// </returns>
         [HttpGet]
         [Authorize(Roles = "teacher")]
         public ActionResult Solution(int taskId)
         {
-            ApplicationUser student = MyStudentsService.GetStudent(taskId);
             Solution solution = MyStudentsService.GetSolution(taskId);
             StudentTask task = MyStudentsService.GetTask(taskId);
 
-            ViewBag.StudentsName = student.LastName + " " + student.LastName + " " + student.Patronymic;
-            ViewBag.StudentsGroup = student.Group.GroupId;
+            List<SelectListItem> points = new List<SelectListItem>();
+            for (int i = 0; i <= task.MaxPoints; i++)
+            {
+                points.Add(new SelectListItem() { Text = i.ToString(), Value = i.ToString() });
+            }
+
+            SelectList pointsList = new SelectList(points, "Value", "Text");
+
             ViewBag.SolutionPath = solution.Path;
-            ViewBag.TaskTitle = task.Title;
-            ViewBag.TaskDescription = task.Description;
+            ViewBag.PointsList = pointsList;
 
             MyStudentsService.UpdateOfStateTask(taskId);
 
-            return this.View();
+            return this.View(task);
         }
 
+        /// <summary>
+        /// Загружает решение задания на компьютер преподавателя.
+        /// </summary>
+        /// <param name="solutionPath">
+        /// Путь к решению на сервере.
+        /// </param>
+        /// <returns>
+        /// Файл с решением задания.
+        /// </returns>
+        [Authorize(Roles = "teacher")]
         public FilePathResult DownloadSolution(string solutionPath)
         {
             string filePath = Server.MapPath("~/Solutions/" + solutionPath);
             string file_name = string.Format("{0}{1}", "solution", Path.GetExtension(filePath));
             return File(filePath, MediaTypeNames.Application.Octet, file_name);
+        }
+
+        /// <summary>
+        /// Сохраняет оценку задания.
+        /// </summary>
+        /// <param name="task">
+        /// Объект задания.
+        /// </param>
+        /// <returns>
+        /// Представление с информацией о решенном задания.
+        /// </returns>
+        [HttpPost]
+        [Authorize(Roles = "teacher")]
+        public ActionResult EvalateSoluition(StudentTask task)
+        {
+            MyStudentsService.UpdateOfEvaluateSolution(task);
+
+            return this.RedirectToAction("Solution", new { taskId = task.StudentTaskId });
         }
     }
 }

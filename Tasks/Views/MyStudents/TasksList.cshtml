@@ -33,6 +33,7 @@
                 <th class="col-md-2">Студент</th>                
                 <th class="col-md-2">Дисциплина</th>
                 <th class="col-md-6">Задание</th>
+                <th class="col-md-1">Баллы</th>
                 <th class="col-md-2"></th>
             </tr>
         </thead>
@@ -50,10 +51,17 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Points)/@Html.DisplayFor(modelItem => item.MaxPoints)
+                    </td>
                     <td class="text-right">
                         @if (item.NewSolutionIsExist)
                         {
-                            <a href="/MyStudents/Solution?taskId=@item.StudentTaskId">Есть новое решение.</a>
+                            <b><a href="/MyStudents/Solution?taskId=@item.StudentTaskId">Есть новое решение.</a></b>
+                        }
+                        else if (item.Solutions.Count > 0)
+                        {
+                            <a href="/MyStudents/Solution?taskId=@item.StudentTaskId">Есть решение.</a>
                         }
                     </td>
                 </tr>

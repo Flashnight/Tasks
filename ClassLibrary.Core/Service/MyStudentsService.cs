@@ -132,23 +132,6 @@ namespace ClassLibrary.Core.Service
         }
 
         /// <summary>
-        /// Возвращает студента, которому выдано задание.
-        /// </summary>
-        /// <param name="taskId">
-        /// Идентификатор задания.
-        /// </param>
-        /// <returns>
-        /// Информация о студенте.
-        /// </returns>
-        public static ApplicationUser GetStudent(int taskId)
-        {
-            StudentTask task = dataBase.StudentTasks.First(t => t.StudentTaskId == taskId);
-            ApplicationUser user = dataBase.Users.First(p => p.Id == task.UserId);
-
-            return user;
-        }
-
-        /// <summary>
         /// Возвращает решение задания.
         /// </summary>
         /// <param name="taskId">
@@ -190,6 +173,21 @@ namespace ClassLibrary.Core.Service
         {
             StudentTask task = dataBase.StudentTasks.First(p => p.StudentTaskId == taskId);
             task.NewSolutionIsExist = false;
+
+            dataBase.Entry(task).State = EntityState.Modified;
+            dataBase.SaveChanges();
+        }
+
+        /// <summary>
+        /// Обновить значение оценки задания в базе данных.
+        /// </summary>
+        /// <param name="task">
+        /// Объект задания с измененной оценкой.
+        /// </param>
+        public static void UpdateOfEvaluateSolution(StudentTask tempTask)
+        {
+            StudentTask task = dataBase.StudentTasks.First(p => p.StudentTaskId == tempTask.StudentTaskId);
+            task.Points = tempTask.Points;
 
             dataBase.Entry(task).State = EntityState.Modified;
             dataBase.SaveChanges();
