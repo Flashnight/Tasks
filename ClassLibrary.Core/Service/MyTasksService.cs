@@ -24,11 +24,6 @@ namespace ClassLibrary.Core.Service
     public static class MyTasksService
     {
         /// <summary>
-        /// Контекст базы данных
-        /// </summary>
-        private static ApplicationDbContext dataBase = new ApplicationDbContext();
-
-        /// <summary>
         /// Возвращает список заданий студента.
         /// </summary>
         /// <param name="disciplineId">
@@ -42,6 +37,9 @@ namespace ClassLibrary.Core.Service
         /// </returns>
         public static MyTasksListViewModel GetMyTaskList(int? disciplineId, string currentUserId)
         {
+            // Контекст базы данных.
+            ApplicationDbContext dataBase = new ApplicationDbContext();
+
             IQueryable<StudentTask> studentTasks = dataBase.StudentTasks.Include("Discipline");
 
             // Получить все задачи пользователя.
@@ -80,6 +78,9 @@ namespace ClassLibrary.Core.Service
         /// </returns>
         public static StudentTask GetMyTask(int taskId)
         {
+            // Контекст базы данных.
+            ApplicationDbContext dataBase = new ApplicationDbContext();
+
             // Найти задачу по id в базе данных.
             StudentTask task = dataBase.StudentTasks.FirstOrDefault<StudentTask>(p => p.StudentTaskId == taskId);
 
@@ -103,6 +104,9 @@ namespace ClassLibrary.Core.Service
         {
             if (upload != null)
             {
+                // Контекст базы данных.
+                ApplicationDbContext dataBase = new ApplicationDbContext();
+
                 // Присвоить файлу случайное имя через Guid.
                 string fileName = string.Format("{0}{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
 

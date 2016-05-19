@@ -58,6 +58,15 @@ namespace ClassLibrary.Core.Controllers
             return this.RedirectToAction("TasksList");
         }
 
+        /// <summary>
+        /// Возвращает форму редактирования задания.
+        /// </summary>
+        /// <param name="taskId">
+        /// Идентификатор задания в базе данных.
+        /// </param>
+        /// <returns>
+        /// Форма редактирования задания.
+        /// </returns>
         [HttpGet]
         [Authorize(Roles = "teacher")]
         public ActionResult EditTask(int taskId)
@@ -73,11 +82,41 @@ namespace ClassLibrary.Core.Controllers
             return this.View(task);
         }
 
+        /// <summary>
+        /// Изменяет информацию о задании.
+        /// </summary>
+        /// <param name="task">
+        /// Объект, содержащий информацию о редактируемом задании.
+        /// </param>
+        /// <returns>
+        /// Представление со списком задании.
+        /// </returns>
         [HttpPost]
         [Authorize(Roles = "teacher")]
         public ActionResult EditTask(StudentTask task)
         {
             MyStudentsService.UpdateTask(task);
+
+            return this.RedirectToAction("TasksList");
+        }
+
+        /// <summary>
+        /// Удаляет задание.
+        /// </summary>
+        /// <param name="taskId">
+        /// Идентификатор задания.
+        /// </param>
+        /// <returns>
+        /// Представление со списком задании.
+        /// </returns>
+        [HttpPost]
+        [Authorize(Roles = "teacher")]
+        public ActionResult DeleteTask(int taskId)
+        {
+
+            string path = Server.MapPath("~/Solutions/");
+
+            MyStudentsService.RemoveTask(taskId, path);
 
             return this.RedirectToAction("TasksList");
         }
@@ -119,6 +158,7 @@ namespace ClassLibrary.Core.Controllers
             Solution solution = MyStudentsService.GetSolution(taskId);
             StudentTask task = MyStudentsService.GetTask(taskId);
 
+            // Лист баллов для дропбокса в представлении.
             List<SelectListItem> points = new List<SelectListItem>();
             for (int i = 0; i <= task.MaxPoints; i++)
             {
