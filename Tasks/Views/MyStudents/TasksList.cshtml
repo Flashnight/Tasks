@@ -35,6 +35,7 @@
                 <th class="col-md-6">Задание</th>
                 <th class="col-md-1">Баллы</th>
                 <th class="col-md-2"></th>
+                <th class="col-md-2"></th>
             </tr>
         </thead>
         <tbody>
@@ -53,6 +54,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Points)/@Html.DisplayFor(modelItem => item.MaxPoints)
+                    </td>
+                    <td class="text-right">
+                        <a href="/MyStudents/EditTask?taskId=@item.StudentTaskId">Редактировать</a>
                     </td>
                     <td class="text-right">
                         @if (item.NewSolutionIsExist)

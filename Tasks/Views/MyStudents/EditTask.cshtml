@@ -1,0 +1,66 @@
+﻿@model ClassLibrary.Core.Models.StudentTask
+
+@{
+    ViewBag.Title = "Редактировать задание";
+}
+
+<h2>
+    @ViewBag.Title
+    <small><p>Редактировать задание</p></small>
+</h2>
+<hr />
+
+
+@using (Html.BeginForm("EditTask", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.HiddenFor(model => model.StudentTaskId)
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserId, "Студент", new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.UserId, (IEnumerable<SelectListItem>)ViewData["AllStudents"], "Выберите студента", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.UserId)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DisciplineId, "Дисциплина", new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.DisciplineId, (IEnumerable<SelectListItem>)ViewData["AllDisciplines"], "Выберите дисциплину", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DisciplineId)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, "Заголовок", new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "Введите заголовок" })
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, "Описание", new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5", placeholder = "Введите описание" })
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MaxPoints, "Максимальный балл", new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.TextAreaFor(model => model.MaxPoints, new { @class = "form-control", rows = "1", placeholder = "Укажите максимальный балл" })
+            @Html.ValidationMessageFor(model => model.MaxPoints)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <input type="submit" class="btn btn-primary btn-block" value="Отправить" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -76,6 +76,31 @@ namespace ClassLibrary.Core.Service
         }
 
         /// <summary>
+        /// Обновляет информацию о задании в базе данных.
+        /// </summary>
+        /// <param name="task">
+        /// Объект с обновленной информацией о задании.
+        /// </param>
+        public static void UpdateTask(StudentTask tempTask)
+        {
+            StudentTask task = dataBase.StudentTasks.First(p => p.StudentTaskId == tempTask.StudentTaskId);
+
+            task.UserId = tempTask.UserId;
+            task.DisciplineId = tempTask.DisciplineId;
+            task.Title = tempTask.Title;
+            task.Description = tempTask.Description;
+            task.MaxPoints = tempTask.MaxPoints;
+
+            if(task.Points > task.MaxPoints)
+            {
+                task.Points = task.MaxPoints;
+            }
+
+            dataBase.Entry(task).State = EntityState.Modified;
+            dataBase.SaveChanges();
+        }
+
+        /// <summary>
         /// Возвращает список студентов и заданий для каждого из них.
         /// </summary>
         /// <param name="userId">

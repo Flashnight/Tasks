@@ -58,6 +58,30 @@ namespace ClassLibrary.Core.Controllers
             return this.RedirectToAction("TasksList");
         }
 
+        [HttpGet]
+        [Authorize(Roles = "teacher")]
+        public ActionResult EditTask(int taskId)
+        {
+            StudentTask task = MyStudentsService.GetTask(taskId);
+
+            // Передать в представление список студентов.
+            this.ViewData["AllStudents"] = MyStudentsService.GetAllStudents();
+
+            // Передать в представление список предметов.
+            this.ViewData["AllDisciplines"] = MyStudentsService.GetAllGroups();
+
+            return this.View(task);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "teacher")]
+        public ActionResult EditTask(StudentTask task)
+        {
+            MyStudentsService.UpdateTask(task);
+
+            return this.RedirectToAction("TasksList");
+        }
+
         /// <summary>
         /// Передает в представление список студентов и заданий, выданных им.
         /// </summary>
