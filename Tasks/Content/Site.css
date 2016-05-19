@@ -39,3 +39,13 @@ textarea {
   cursor: pointer;
   opacity: 0;
   filter: alpha(opacity=0); }
+
+/*Стилизация вывода ошибок*/
+.field-validation-error {
+    color: #ff0000;
+}
+ 
+.input-validation-error {
+    border: 1px solid #006699;
+    background-color: lemonchiffon;
+}

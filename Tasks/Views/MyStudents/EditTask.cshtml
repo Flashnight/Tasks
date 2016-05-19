@@ -1,18 +1,19 @@
 ﻿@model ClassLibrary.Core.Models.StudentTask
 
 @{
-    ViewBag.Title = "Новое задание";
+    ViewBag.Title = "Редактировать задание";
 }
 
 <h2>
     @ViewBag.Title
-    <small><p>Добавить новое задание для студента</p></small>
+    <small><p>Редактировать информацию о задании</p></small>
 </h2>
 <hr />
 
 
-@using (Html.BeginForm("NewTask", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("EditTask", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
+    @Html.HiddenFor(model => model.StudentTaskId)
     <div class="form-group">
         @Html.LabelFor(model => model.UserId, "Студент", new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
@@ -56,6 +57,19 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-8">
             <input type="submit" class="btn btn-primary btn-block" value="Отправить" />
+        </div>
+    </div>
+    
+}
+
+@using (Html.BeginForm("DeleteTask", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.HiddenFor(model => model.StudentTaskId)
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <input type="hidden" name="taskId" value=@Model.StudentTaskId />
+            <input type="submit" class="btn btn-primary btn-block" value="Удалить" />
         </div>
     </div>
 }

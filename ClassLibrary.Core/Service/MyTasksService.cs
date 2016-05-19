@@ -16,17 +16,13 @@ namespace ClassLibrary.Core.Service
     using System.Web;
     using System.Web.Mvc;
     using ClassLibrary.Core.Models;
+    using System.Data.Entity;
 
     /// <summary>
     /// Предоставляет методы для работы с данными о собственных заданиях студента.
     /// </summary>
     public static class MyTasksService
     {
-        /// <summary>
-        /// Контекст базы данных
-        /// </summary>
-        private static ApplicationDbContext dataBase = new ApplicationDbContext();
-
         /// <summary>
         /// Возвращает список заданий студента.
         /// </summary>
@@ -41,6 +37,9 @@ namespace ClassLibrary.Core.Service
         /// </returns>
         public static MyTasksListViewModel GetMyTaskList(int? disciplineId, string currentUserId)
         {
+            // Контекст базы данных.
+            ApplicationDbContext dataBase = new ApplicationDbContext();
+
             IQueryable<StudentTask> studentTasks = dataBase.StudentTasks.Include("Discipline");
 
             // Получить все задачи пользователя.
@@ -79,6 +78,9 @@ namespace ClassLibrary.Core.Service
         /// </returns>
         public static StudentTask GetMyTask(int taskId)
         {
+            // Контекст базы данных.
+            ApplicationDbContext dataBase = new ApplicationDbContext();
+
             // Найти задачу по id в базе данных.
             StudentTask task = dataBase.StudentTasks.FirstOrDefault<StudentTask>(p => p.StudentTaskId == taskId);
 
@@ -102,15 +104,40 @@ namespace ClassLibrary.Core.Service
         {
             if (upload != null)
             {
+                // Контекст базы данных.
+                ApplicationDbContext dataBase = new ApplicationDbContext();
+
                 // Присвоить файлу случайное имя через Guid.
-                string fileName = string.Format("{0}.{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
+                string fileName = string.Format("{0}{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
 
                 // Сохранить файл решения.
                 upload.SaveAs(path + fileName);
 
+                // Удалить все прочие решения.
+                IQueryable<Solution> solutions = dataBase.Solutions.Where(p => p.StudentTaskId == taskId);
+
+                foreach(var item in solutions)
+                {
+                    // Удалить файл решения.
+                    if (File.Exists(path + item.Path))
+                    {
+                        File.Delete(path + item.Path);
+                    }
+
+                    // Удалить запись из базы данных.
+                    dataBase.Entry(item).State = EntityState.Deleted;
+                }
+
                 // Сохранить имя файла в базе данных.
                 Solution newSolution = new Solution { Path = fileName, StudentTaskId = taskId };
                 dataBase.Solutions.Add(newSolution);
+                
+
+                // Добавить оповещение о новом решении.
+                StudentTask task = dataBase.StudentTasks.Where(p => p.StudentTaskId == taskId).First();
+                task.NewSolutionIsExist = true;
+                dataBase.Entry(task).State = EntityState.Modified;
+
                 dataBase.SaveChanges();
             }
         }
