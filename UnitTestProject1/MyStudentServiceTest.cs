@@ -37,17 +37,32 @@ namespace UnitTestProject1
         [TestMethod]
         public void AddTaskTest()
         {
-            StudentTask task = new StudentTask { Title = "Пример", Description = "Пример", UserId = userId, DisciplineId = disciplineId,  MaxPoints = 100 };
+            StudentTask task = new StudentTask {  Title = "Пример", Description = "Пример", UserId = userId, DisciplineId = disciplineId,  MaxPoints = 100 };
 
             MyStudentsService.AddTask(task);
         }
 
+        /// <summary>
+        /// Метод тестирования метода UpdateTaskTest()
+        /// </summary>
         [TestMethod]
         public void UpdateTaskTest()
         {
             StudentTask task = new StudentTask { StudentTaskId = 8, Title = "Пример2", Description = "Пример2", UserId = userId, DisciplineId = 2, MaxPoints = 100 };
 
             MyStudentsService.UpdateTask(task);
+        }
+        
+        /// <summary>
+        /// Метод тестирования метода RemoveTask()
+        /// </summary>
+        [TestMethod]
+        public void RemoveTaskTest()
+        {
+            int taskId = 9;
+            string path = @"D:\GitHub\Tasks\Tasks\Solutions";
+
+            MyStudentsService.RemoveTask(taskId, path);
         }
     }
 }
