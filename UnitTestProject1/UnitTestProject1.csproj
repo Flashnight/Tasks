@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="MyStudentsControllerTest.cs" />
     <Compile Include="MyStudentServiceTest.cs" />
+    <Compile Include="MyTasksServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
