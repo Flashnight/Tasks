@@ -28,6 +28,7 @@
                 <tr>
                     <th class="col-md-2">Дисциплина</th>
                     <th class="col-md-6">Задание</th>
+                    <th class="col-md-2">Балл</th>
                     <th class="col-md-2"></th>
                 </tr>
             </thead>
@@ -41,6 +42,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Title)
                         </td>
+                        <td>@Html.DisplayFor(modelItem => item.Points)/@Html.DisplayFor(modelItem => item.MaxPoints)</td>
                         <td class="text-right">
                             <a href="/MyTasks/Description?taskId=@item.StudentTaskId">Подробнее</a>
                         </td>

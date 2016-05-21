@@ -1,6 +1,6 @@
 ﻿@model ClassLibrary.Core.Models.StudentTask
 @{
-    ViewBag.Title = ViewBag.Task.Title;
+    ViewBag.Title = Model.Title;
 }
 
 <br />
@@ -8,16 +8,17 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="col-md-offset-1 col-md-10">
-                <h3>@ViewBag.Task.Title</h3>
+                <h3>@Model.Title</h3>
                 <hr />
-                @ViewBag.Task.Description
+                <p>@Model.Description</p>
+                <p>Балл за выполнение: @Html.DisplayFor(model => model.Points)/@Html.DisplayFor(model => model.MaxPoints)</p>
             </div>
         </div>
         <div class="panel-footer">
             <h4>Отправить решение</h4>
             @using (Html.BeginForm("UploadSolution", "MyTasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <input type="hidden" name="taskId" value=@ViewBag.Task.StudentTaskId />
+                <input type="hidden" name="taskId" value=@Model.StudentTaskId />
                 <input type="file" name="upload" /><br>
                 <input type="submit" value="Загрузить" class="btn btn-primary" />
             }

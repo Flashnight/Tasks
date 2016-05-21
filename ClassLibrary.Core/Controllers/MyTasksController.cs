@@ -56,10 +56,7 @@ namespace ClassLibrary.Core.Controllers
             // Получить информацию о задании из бд.
             StudentTask task = MyTasksService.GetMyTask(taskId);
 
-            // Передать задания в представление.
-            ViewBag.Task = task;    
-
-            return this.View();
+            return this.View(task);
         }
 
         /// <summary>
