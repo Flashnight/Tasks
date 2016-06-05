@@ -12,6 +12,7 @@ namespace ClassLibrary.Core.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
+
     /// <summary>
     /// Предоставляет модель данных о задании.
     /// </summary>

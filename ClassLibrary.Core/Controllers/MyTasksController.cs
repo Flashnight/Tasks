@@ -9,10 +9,14 @@
 
 namespace ClassLibrary.Core.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.IO;
+    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
     using ClassLibrary.Core.Models;
-    using ClassLibrary.Core.Service;
     using Microsoft.AspNet.Identity;
 
     /// <summary>
@@ -35,8 +39,32 @@ namespace ClassLibrary.Core.Controllers
             // Id текущего пользователя.
             string currentUserId = User.Identity.GetUserId();
 
-            // Получить список заданий из базы данных.
-            MyTasksListViewModel myTasksListViewModel = MyTasksService.GetMyTaskList(disciplineId, currentUserId);
+            // Контекст базы данных.
+            ApplicationDbContext dataBase = new ApplicationDbContext();
+
+            IQueryable<StudentTask> studentTasks = dataBase.StudentTasks.Include("Discipline");
+
+            // Получить все задачи пользователя.
+            studentTasks = studentTasks.Where(p => p.UserId == currentUserId);
+
+            // Отфильтровать задания по выбранной дисциплине, если та указана.
+            if (disciplineId != null && disciplineId != 0)
+            {
+                studentTasks = studentTasks.Where(p => p.DisciplineId == disciplineId);
+            }
+
+            // Список дисциплин.
+            List<Discipline> disciplines = dataBase.Disciplines.ToList();
+
+            // Выбрать все задания.
+            disciplines.Insert(0, new Discipline { Name = "Все дисциплины", DisciplineId = 0 });
+
+            // Данные, которые будут переданы в представление.
+            MyTasksListViewModel myTasksListViewModel = new MyTasksListViewModel
+            {
+                StudentTasks = studentTasks.ToList(),
+                Disciplines = new SelectList(disciplines, "DisciplineId", "name")
+            };
 
             return this.View(myTasksListViewModel);
         }
@@ -53,8 +81,11 @@ namespace ClassLibrary.Core.Controllers
         [Authorize(Roles = "student")]
         public ActionResult Description(int taskId)
         {
-            // Получить информацию о задании из бд.
-            StudentTask task = MyTasksService.GetMyTask(taskId);
+            // Контекст базы данных.
+            ApplicationDbContext dataBase = new ApplicationDbContext();
+
+            // Найти задачу по id в базе данных.
+            StudentTask task = dataBase.StudentTasks.FirstOrDefault<StudentTask>(p => p.StudentTaskId == taskId);
 
             return this.View(task);
         }
@@ -82,8 +113,43 @@ namespace ClassLibrary.Core.Controllers
                 // Получить физический путь к папке с решениями.
                 string path = Server.MapPath("~/Solutions/");
 
-                // Сохранить файл решения в файловой системе.
-                MyTasksService.UploadSolution(taskId, upload, path);
+                if (upload != null)
+                {
+                    // Контекст базы данных.
+                    ApplicationDbContext dataBase = new ApplicationDbContext();
+
+                    // Присвоить файлу случайное имя через Guid.
+                    string fileName = string.Format("{0}{1}", Guid.NewGuid(), Path.GetExtension(upload.FileName));
+
+                    // Сохранить файл решения.
+                    upload.SaveAs(path + fileName);
+
+                    // Удалить все прочие решения.
+                    IQueryable<Solution> solutions = dataBase.Solutions.Where(p => p.StudentTaskId == taskId);
+
+                    foreach (var item in solutions)
+                    {
+                        // Удалить файл решения.
+                        if (System.IO.File.Exists(path + item.Path))
+                        {
+                            System.IO.File.Delete(path + item.Path);
+                        }
+
+                        // Удалить запись из базы данных.
+                        dataBase.Entry(item).State = EntityState.Deleted;
+                    }
+
+                    // Сохранить имя файла в базе данных.
+                    Solution newSolution = new Solution { Path = fileName, StudentTaskId = taskId };
+                    dataBase.Solutions.Add(newSolution);
+
+                    // Добавить оповещение о новом решении.
+                    StudentTask task = dataBase.StudentTasks.Where(p => p.StudentTaskId == taskId).First();
+                    task.NewSolutionIsExist = true;
+                    dataBase.Entry(task).State = EntityState.Modified;
+
+                    dataBase.SaveChanges();
+                }
             }
 
             // Перенаправить на список заданий.
