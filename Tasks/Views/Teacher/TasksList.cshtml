@@ -20,7 +20,7 @@
         </div>
         <div class="col-md-4">
             <input type="submit" value="Применить фильтр" class="btn btn-primary" />        
-            <a href="/MyStudents/NewTask" class="btn btn-primary" role="button" style="margin-left:10px">Добавить задание</a>            
+            <a href="/Teacher/NewTask" class="btn btn-primary" role="button" style="margin-left:10px">Добавить задание</a>            
         </div>
     </div>
 </form>
@@ -56,16 +56,16 @@
                         @Html.DisplayFor(modelItem => item.Points)/@Html.DisplayFor(modelItem => item.MaxPoints)
                     </td>
                     <td class="text-right">
-                        <a href="/MyStudents/EditTask?taskId=@item.StudentTaskId">Редактировать</a>
+                        <a href="/Teacher/EditTask?taskId=@item.StudentTaskId">Редактировать</a>
                     </td>
                     <td class="text-right">
                         @if (item.NewSolutionIsExist)
                         {
-                            <b><a href="/MyStudents/Solution?taskId=@item.StudentTaskId">Есть новое решение.</a></b>
+                            <b><a href="/Teacher/Solution?taskId=@item.StudentTaskId">Есть новое решение.</a></b>
                         }
                         else if (item.Solutions.Count > 0)
                         {
-                            <a href="/MyStudents/Solution?taskId=@item.StudentTaskId">Есть решение.</a>
+                            <a href="/Teacher/Solution?taskId=@item.StudentTaskId">Есть решение.</a>
                         }
                     </td>
                 </tr>

@@ -25,11 +25,11 @@
                     <li>
                     @if (User.IsInRole("student"))
                     {
-                        @Html.ActionLink("Список заданий", "List", "MyTasks")
+                        @Html.ActionLink("Список заданий", "List", "Student")
                     }
                     else
                     {
-                        @Html.ActionLink("Список заданий", "TasksList", "MyStudents")
+                        @Html.ActionLink("Список заданий", "TasksList", "Teacher")
                     }
                     </li>
                     <li>@Html.ActionLink("О программе", "About", "Home")</li>

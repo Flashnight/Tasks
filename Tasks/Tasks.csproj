@@ -274,12 +274,12 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
-    <Content Include="Views\MyTasks\List.cshtml" />
-    <Content Include="Views\MyTasks\Description.cshtml" />
-    <Content Include="Views\MyStudents\NewTask.cshtml" />
-    <Content Include="Views\MyStudents\TasksList.cshtml" />
-    <Content Include="Views\MyStudents\Solution.cshtml" />
-    <Content Include="Views\MyStudents\EditTask.cshtml" />
+    <Content Include="Views\Student\List.cshtml" />
+    <Content Include="Views\Student\Description.cshtml" />
+    <Content Include="Views\Teacher\NewTask.cshtml" />
+    <Content Include="Views\Teacher\TasksList.cshtml" />
+    <Content Include="Views\Teacher\Solution.cshtml" />
+    <Content Include="Views\Teacher\EditTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

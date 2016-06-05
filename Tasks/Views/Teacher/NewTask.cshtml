@@ -11,7 +11,7 @@
 <hr />
 
 
-@using (Html.BeginForm("NewTask", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("NewTask", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     <div class="form-group">
         @Html.LabelFor(model => model.UserId, "Студент", new { @class = "col-md-2 control-label" })

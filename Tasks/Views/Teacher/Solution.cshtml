@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="panel-footer">
-            @using (Html.BeginForm("EvalateSoluition", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("EvalateSoluition", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 <div class="form-group">
                     @Html.HiddenFor(model => model.StudentTaskId)
@@ -42,7 +42,7 @@
                     </div>
                 </div>
             }
-            @using (Html.BeginForm("DownloadSolution", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("DownloadSolution", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-8">

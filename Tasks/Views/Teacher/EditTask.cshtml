@@ -11,7 +11,7 @@
 <hr />
 
 
-@using (Html.BeginForm("EditTask", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("EditTask", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.HiddenFor(model => model.StudentTaskId)
     <div class="form-group">
@@ -62,7 +62,7 @@
     
 }
 
-@using (Html.BeginForm("DeleteTask", "MyStudents", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("DeleteTask", "Teacher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.HiddenFor(model => model.StudentTaskId)
 

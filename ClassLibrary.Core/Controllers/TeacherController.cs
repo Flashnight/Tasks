@@ -23,7 +23,7 @@ namespace ClassLibrary.Core.Controllers
     /// <summary>
     /// Предоставляет контроллер с методами для работы с данными о студентах и выполненных ими заданиях.
     /// </summary>
-    public class MyStudentsController : Controller
+    public class TeacherController : Controller
     {
         /// <summary>
         /// Передает в представление список студентов и предметов.

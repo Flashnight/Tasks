@@ -82,26 +82,20 @@ namespace ClassLibrary.Core.Controllers
                 //Если авторизация прошла успешно
                 case SignInStatus.Success:
                     {
-                        // Список ролей пользователя
-                        IList<string> Roles = new List<string>();
                         // Получение данных об авторизовавшемся пользователе
                         ApplicationUserManager UserManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                         ApplicationUser User = UserManager.FindByEmail(model.Email);
 
-                        // Сохранение в списке всех ролей пользователя
-                        if (User != null)
-                            Roles = UserManager.GetRoles(User.Id);
-
                         // Перенаправление пользователя после авторизации в зависимости от заданной роли.
                         //
                         // Если пользователь преподаватель, то перенаправить на страницу с заданиями студентов.
-                        if (Roles.Where(p => p == "teacher").Count() != 0)
+                        if (await UserManager.IsInRoleAsync(User.Id, "teacher"))
                         {
-                            return RedirectToRoute(new { controller = "MyStudents", action = "TasksList" });
+                            return RedirectToRoute(new { controller = "Teacher", action = "TasksList" });
                         }
                         // Иначе - перенаправить на страницу заданий студента
                         else
-                            return RedirectToRoute(new { controller = "MyTasks", action = "List" });
+                            return RedirectToRoute(new { controller = "Student", action = "List" });
                     }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -194,7 +188,7 @@ namespace ClassLibrary.Core.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Подтверждение учетной записи", "Подтвердите вашу учетную запись, щелкнув <a href=\"" + callbackUrl + "\">здесь</a>");
 
-                    return RedirectToRoute(new { controller = "MyTasks", action = "List" });
+                    return RedirectToRoute(new { controller = "Student", action = "List" });
                 }
                 AddErrors(result);
             }
