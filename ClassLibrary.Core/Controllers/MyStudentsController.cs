@@ -43,7 +43,7 @@ namespace ClassLibrary.Core.Controllers
 
             // Отфильтровать список пользователей, оставив только студентов.
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            students = students.Where(s => userManager.GetRoles(s.Value).Contains("student"));
+            students = students.Where(s =>  userManager.IsInRole(s.Value, "student"));
 
             // Получить список всех групп.
             IEnumerable<SelectListItem> disciplines = dataBase.Disciplines.Select(s => new SelectListItem { Text = s.Name, Value = s.DisciplineId.ToString() });
@@ -108,7 +108,7 @@ namespace ClassLibrary.Core.Controllers
 
             // Отфильтровать список пользователей, оставив только студентов.
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            students = students.Where(s => userManager.GetRoles(s.Value).Contains("student"));
+            students = students.Where(s => userManager.IsInRole(s.Value, "student"));
 
             // Получить список всех групп.
             IEnumerable<SelectListItem> disciplines = dataBase.Disciplines.Select(s => new SelectListItem { Text = s.Name, Value = s.DisciplineId.ToString() });
@@ -248,7 +248,7 @@ namespace ClassLibrary.Core.Controllers
 
             // Отфильтровать пользователей и сохранить в списке только студентов.
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            students = students.Where(s => userManager.GetRoles(s.Id).Contains("student")).ToList();
+            students = students.Where(s => userManager.IsInRole(s.Id, "student")).ToList();
 
             // Вставить значение "все студенты для выпадающего списка.
             students.Insert(0, new { Id = "AllStudents", Name = "Все студенты" });
