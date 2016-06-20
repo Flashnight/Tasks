@@ -88,8 +88,13 @@ namespace ClassLibrary.Core.Controllers
 
                         // Перенаправление пользователя после авторизации в зависимости от заданной роли.
                         //
-                        // Если пользователь преподаватель, то перенаправить на страницу с заданиями студентов.
-                        if (await UserManager.IsInRoleAsync(User.Id, "teacher"))
+                        // Если пользователь - администратор, то перенаправить на страницу со списком пользователей.
+                        if (await UserManager.IsInRoleAsync(User.Id, "admin"))
+                        {
+                            return RedirectToRoute(new { controller = "Admin", action = "UsersList" });
+                        }
+                        // Если пользователь - преподаватель, то перенаправить на страницу с заданиями студентов.
+                        else if (await UserManager.IsInRoleAsync(User.Id, "teacher"))
                         {
                             return RedirectToRoute(new { controller = "Teacher", action = "TasksList" });
                         }

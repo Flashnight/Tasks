@@ -280,6 +280,7 @@
     <Content Include="Views\Teacher\TasksList.cshtml" />
     <Content Include="Views\Teacher\Solution.cshtml" />
     <Content Include="Views\Teacher\EditTask.cshtml" />
+    <Content Include="Views\Admin\UsersList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,80 @@
+﻿@model ClassLibrary.Core.Models.UsersListViewModel
+
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form class="col-md-offset-1" method="get">
+    <div class="form-group">
+        <div class="col-md-3" id="roleSelect">
+            @Html.DropDownList("roleId", Model.Roles as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3" id="groupSelect" style="display:none">
+            @Html.DropDownList("groupId", Model.Groups as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-md-5">
+            <input type="submit" value="Применить фильтр" class="btn btn-primary" />
+            <a href="#" class="btn btn-primary" role="button" style="margin-left:10px">Добавить пользователя</a>
+        </div>
+    </div>
+</form>
+<hr class="col-md-offset-1 col-md-10" />
+
+<div class="col-md-offset-1 col-md-10">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-md-2">Пользователь</th>
+                <th class="col-md-2">Роль</th>
+                <th class="col-md-2">Группа</th>
+                <th class="col-md-2"></th>
+                <th class="col-md-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Users)
+            {
+                <tr data-toggle="collapse" data-target="#@item.Id">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Roles.First(p => p.Value == item.Roles.First().RoleId).Text)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Group.Name)
+                    </td>
+                    <td class="text-right">
+                        <a href="#">Редактировать</a>
+                    </td>
+                    <td class="text-right">
+                        <a href="#">Удалить</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    
+    <script type="text/javascript">
+        // Скрывает DropDownList с выбором группы, если не выбрана роль студента.
+        $(document).ready(function () {
+            $('#roleId').on('change', function () {
+                var studentId = '@Model.Roles.First(p => p.Text == "Студент").Value';
+
+                if (this.value == studentId)
+                {
+                    $("#groupSelect").show();
+                }
+                else {
+                    $("#groupSelect").hide();
+                }
+            });
+        });
+    </script>
+}
