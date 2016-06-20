@@ -7,10 +7,8 @@
 
 namespace ClassLibrary.Core.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
-    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -34,7 +32,7 @@ namespace ClassLibrary.Core.Controllers
         /// Представление со списком всех пользователей.
         /// </returns>
         [HttpGet]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult UsersList(string roleId, int? groupId)
         {
             ApplicationDbContext dataBase = new ApplicationDbContext();
